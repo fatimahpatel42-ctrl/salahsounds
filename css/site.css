@@ -113,7 +113,9 @@ nav.main{display:none}
 nav.main.open{display:flex;position:absolute;left:0;right:0;top:calc(100% - 4px);flex-direction:column;gap:2px;background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:10px;z-index:50;box-shadow:0 24px 48px rgba(10,15,40,.18);font-size:17px}
 nav.main.open a{padding:13px 14px;border-radius:14px}
 nav.main.open .nav-book{display:block;margin-top:6px;background:var(--btnDark);color:var(--btnDarkInk);text-align:center;font-weight:600;padding:15px}
-.hero{padding-top:8px}
+.hero{padding-top:8px;padding-bottom:36px}
+section.block{padding:40px 0}
+.head{margin-bottom:24px}
 .contact{border-radius:28px}
 }
 /* motion */
