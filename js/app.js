@@ -468,7 +468,7 @@ ${(bars||[]).map((bar, $index) => html`
 <div style="display: flex; flex-direction: column; gap: 16px">
 <span style="font-size: 14px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: ${t.accentText}">System builder</span>
 <h2 style="margin: 0; font-family: ${fontD}; font-weight: 800; font-size: clamp(38px, 4.6vw, 68px); line-height: 0.98; letter-spacing: -0.035em">What would your system cost?</h2>
-<p style="margin: 0; color: ${t.muted}; font-size: 18px">Two questions. Instant starting price. No email needed.</p>
+<p style="margin: 0; color: ${t.muted}; font-size: 18px">Answer two questions to see your starting price straight away, then send it to us in one tap for an exact quote.</p>
 </div>
 <fieldset style="border: 0; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px">
 <legend style="font-weight: 600; font-size: 16px; margin-bottom: 14px">1. What's it for?</legend>
