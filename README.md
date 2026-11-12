@@ -8,6 +8,8 @@ Redesigned homepage for [Salah Sounds](https://salahsounds.co.uk), mosque sound 
 - `services/` — service pages: mosque sound systems, event AV & live streaming, training & support (plain HTML, styled by `css/site.css`, behaviour in `js/page.js`)
 - `js/app.js` — the page and its interactive parts (before/after player, price tool, FAQ, reviews, contact form chips)
 - `js/vendor/` — Preact and htm, bundled locally (no build step, no CDN)
+- `academy/` — case studies (Edmonton Islamic Centre)
+- `img/og-image.jpg` — the preview image shown when a link is shared on WhatsApp, Facebook, etc.
 - `img/` — logo, client logos and masjid photos
 - `audio/` — York Mosque before/after recordings
 

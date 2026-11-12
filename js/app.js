@@ -661,7 +661,7 @@ ${r.long ? html`
 <h3 style="margin: 6px 0 6px; font-family: ${fontD}; font-weight: 700; font-size: 30px; letter-spacing: -0.02em">Learn from real installs.</h3>
 <p style="margin: 0; color: ${t.muted}">Step-by-step breakdowns of our projects, like the Edmonton Islamic Centre multi-zone audio upgrade, so committees can see how great masjid sound is planned, built and tuned.</p>
 </div>
-<a href="https://salahsounds.co.uk/academy/" style="min-height: 52px; display: inline-flex; align-items: center; padding: 0 26px; border-radius: 999px; background: ${t.ink}; color: ${t.bg}; text-decoration: none; font-weight: 600">Read the Edmonton case study</a>
+<a href="academy/edmonton-islamic-centre.html" style="min-height: 52px; display: inline-flex; align-items: center; padding: 0 26px; border-radius: 999px; background: ${t.ink}; color: ${t.bg}; text-decoration: none; font-weight: 600">Read the Edmonton case study</a>
 </div>
 </div>
 </section>
