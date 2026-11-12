@@ -1,5 +1,7 @@
 
 (function(){
+  var mb=document.querySelector('[data-mode]');
+  if(mb)mb.addEventListener('click',function(){var d=document.documentElement.getAttribute('data-theme')!=='dark';if(d)document.documentElement.setAttribute('data-theme','dark');else document.documentElement.removeAttribute('data-theme');try{localStorage.setItem('ss-theme',d?'dark':'light')}catch(e){}});
   var WA='https://wa.me/442038177858?text=';
   // chip groups
   document.querySelectorAll('.pick').forEach(function(g){

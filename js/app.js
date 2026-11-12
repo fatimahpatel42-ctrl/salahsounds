@@ -13,15 +13,22 @@ class DCLogic extends Component {
 class Site extends DCLogic {
   constructor(props) {
     super(props);
-    this.state = { mode: 'after', space: 'masjid', cap: 250, open: 0 };
+    var saved = null;
+    try { saved = window.localStorage.getItem('ss-theme'); } catch (e) {}
+    var prefersDark = false;
+    try { prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches; } catch (e) {}
+    this.state = { mode: 'after', space: 'masjid', cap: 250, open: 0, dark: saved ? saved === 'dark' : prefersDark };
   }
   renderVals() {
     var themes = {
       'Indigo & White': { bg: '#F6F7FB', bg2: '#ECEEF7', surface: '#FFFFFF', line: '#DCE0EE', ink: '#141B2D', muted: '#525C72', accent: '#5A55D6', accentText: '#4A45C4', accentInk: '#FFFFFF', grad: 'linear-gradient(180deg, #4F7FE0, #7A4FC0)' },
       'Lavender Mist': { bg: '#F5F3FC', bg2: '#ECE8F8', surface: '#FFFFFF', line: '#DDD6F0', ink: '#1A1530', muted: '#5A5470', accent: '#6E4BC4', accentText: '#5B3AAE', accentInk: '#FFFFFF', grad: 'linear-gradient(180deg, #5C7BE0, #7A4FC0)' },
+      'Night': { bg: '#0B0F1E', bg2: '#10152A', surface: '#161C33', line: '#283152', ink: '#EEF1F8', muted: '#A7AFC6', accent: '#6C66E8', accentText: '#A9B4FF', accentInk: '#FFFFFF', grad: 'linear-gradient(180deg, #5B8BEA, #8A5FD0)' },
       'Cool Slate': { bg: '#F4F6F8', bg2: '#E8ECF0', surface: '#FFFFFF', line: '#D6DCE3', ink: '#1E2B38', muted: '#4F5D6B', accent: '#3E5468', accentText: '#3E5468', accentInk: '#FFFFFF', grad: 'linear-gradient(180deg, #4F7FE0, #7A4FC0)' }
     };
-    var t = themes[this.props.theme] || themes['Indigo & White'];
+    var dark = !!this.state.dark;
+    var t = dark ? themes['Night'] : (themes[this.props.theme] || themes['Indigo & White']);
+    try { document.documentElement.style.colorScheme = dark ? 'dark' : 'light'; document.body.style.background = t.bg; } catch (e) {}
     var fam = this.props.font || 'Plus Jakarta Sans';
     var fontD = "'" + fam + "', system-ui, sans-serif";
     var fontB = "'" + fam + "', system-ui, sans-serif";
@@ -189,6 +196,11 @@ class Site extends DCLogic {
     });
 
     return {
+      logoHeader: 'height: 56px; width: auto; display: block' + (dark ? '; background: #FFFFFF; padding: 6px 12px; border-radius: 14px; box-sizing: content-box' : ''),
+      logoFooter: 'height: 44px; width: auto; display: block' + (dark ? '; background: #FFFFFF; padding: 5px 10px; border-radius: 12px; box-sizing: content-box' : ''),
+      logoSplash: dark ? 'background: #FFFFFF; padding: 14px 22px; border-radius: 20px' : '',
+      dark: dark, light: !dark, darkLabel: dark ? 'Switch to light mode' : 'Switch to dark mode',
+      toggleDark: function () { var d = !self.state.dark; try { window.localStorage.setItem('ss-theme', d ? 'dark' : 'light'); } catch (e) {} self.setState({ dark: d }); },
       t: t, fontD: fontD, fontB: fontB, abBtns: abBtns, bars: bars, read: read, playing: playing, notPlaying: !playing, togglePlay: togglePlay, onEnded: onEnded, playLabel: playing ? 'Pause' : 'Play recording',
       spaceOpts: spaceOpts, cap: cap, sizeLabel: sizeLabel, est: est,
       onCap: function (e) { self.setState({ cap: parseInt(e.target.value, 10) }); },
@@ -199,12 +211,12 @@ class Site extends DCLogic {
 
 
 function view(v) {
-  const { abBtns, bars, cap, est, faqs, fontB, fontD, form, needOpts, notPlaying, onCap, onEnded, playLabel, playing, prefOpts, read, reviews, sendEnquiry, sendLabel, sizeLabel, spaceOpts, t, togglePlay, useForm, waQuote } = v;
-  return html`<div style="width: 100%; background: ${t.bg}; color: ${t.ink}; font-family: ${fontB}; font-size: 17px; line-height: 1.6; overflow: hidden">
+  const { abBtns, bars, cap, dark, darkLabel, est, faqs, fontB, fontD, form, light, logoFooter, logoHeader, logoSplash, needOpts, notPlaying, onCap, onEnded, playLabel, playing, prefOpts, read, reviews, sendEnquiry, sendLabel, sizeLabel, spaceOpts, t, toggleDark, togglePlay, useForm, waQuote } = v;
+  return html`<div style="width: 100%; transition: background-color .4s, color .4s; background: ${t.bg}; color: ${t.ink}; font-family: ${fontB}; font-size: 17px; line-height: 1.6; overflow: hidden">
 
 
 <div class="splash" aria-hidden="true" style="background: ${t.bg}">
-<img src="img/salah-sounds-logo.png" alt="" />
+<img src="img/salah-sounds-logo.png" alt="" style=${logoSplash} />
 <div class="wv"><span style="animation-delay: 0.00s"></span><span style="animation-delay: 0.12s"></span><span style="animation-delay: 0.24s"></span><span style="animation-delay: 0.36s"></span><span style="animation-delay: 0.48s"></span><span style="animation-delay: 0.36s"></span><span style="animation-delay: 0.24s"></span><span style="animation-delay: 0.12s"></span><span style="animation-delay: 0.00s"></span><span style="animation-delay: 0.12s"></span><span style="animation-delay: 0.24s"></span><span style="animation-delay: 0.36s"></span><span style="animation-delay: 0.48s"></span></div>
 <div class="ld"><i></i></div>
 </div>
@@ -213,7 +225,7 @@ function view(v) {
 
 
 <header style="max-width: 1320px; margin: 0 auto; padding: 22px 32px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px">
-<a href="#top" aria-label="Salah Sounds home" style="display: flex; align-items: center; text-decoration: none"><img src="img/salah-sounds-logo.png" alt="Salah Sounds Audio Visual" style="height: 56px; width: auto; display: block" /></a>
+<a href="#top" aria-label="Salah Sounds home" style="display: flex; align-items: center; text-decoration: none"><img src="img/salah-sounds-logo.png" alt="Salah Sounds Audio Visual" style=${logoHeader} /></a>
 <nav aria-label="Main" style="display: flex; flex-wrap: wrap; gap: 6px 30px; font-size: 15px; font-weight: 500; color: ${t.muted}">
 <a href="#services" style="text-decoration: none">Services</a>
 <a href="#estimate" style="text-decoration: none">Price my system</a>
@@ -222,7 +234,13 @@ function view(v) {
 <a href="#academy" style="text-decoration: none">Academy</a>
 <a href="#faq" style="text-decoration: none">FAQ</a>
 </nav>
+<div style="display: flex; align-items: center; gap: 10px">
+<button type="button" onClick=${toggleDark} aria-label=${darkLabel} title=${darkLabel} style="width: 46px; height: 46px; border-radius: 999px; border: 1px solid ${t.line}; background: ${t.surface}; color: ${t.ink}; display: flex; align-items: center; justify-content: center; cursor: pointer">
+${dark ? html`<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="M4.9 4.9l1.4 1.4"></path><path d="M17.7 17.7l1.4 1.4"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="M4.9 19.1l1.4-1.4"></path><path d="M17.7 6.3l1.4-1.4"></path></svg>` : null}
+${light ? html`<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path></svg>` : null}
+</button>
 <a href="#contact" style="min-height: 46px; display: inline-flex; align-items: center; padding: 0 22px; border-radius: 999px; background: ${t.ink}; color: ${t.bg}; text-decoration: none; font-size: 15px; font-weight: 600">Book a site visit</a>
+</div>
 </header>
 
 
@@ -733,7 +751,7 @@ ${(prefOpts||[]).map((o, $index) => html`
 
 <footer style="padding: 40px 32px; font-size: 14px; color: ${t.muted}">
 <div style="max-width: 1320px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 20px">
-<img src="img/salah-sounds-logo.png" alt="Salah Sounds Audio Visual" style="height: 44px; width: auto; display: block" />
+<img src="img/salah-sounds-logo.png" alt="Salah Sounds Audio Visual" style=${logoFooter} />
 <div style="display: flex; gap: 22px; flex-wrap: wrap">
 <a href="https://facebook.com" style="text-decoration: none; min-height: 44px; display: inline-flex; align-items: center">Facebook</a>
 <a href="https://instagram.com" style="text-decoration: none; min-height: 44px; display: inline-flex; align-items: center">Instagram</a>
