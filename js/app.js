@@ -221,8 +221,7 @@ function view(v) {
 <div class="in5" style="background: ${t.surface}; border: 1px solid ${t.line}; border-radius: 28px; padding: 18px; display: flex; flex-direction: column; gap: 14px; box-shadow: 0 30px 60px rgba(30,35,80,0.12)">
 <div style="border-radius: 18px; background: #141B2D; color: #FFFFFF; padding: 14px 14px 14px 18px; display: flex; align-items: center; gap: 14px">
 <span style="display: flex; flex-direction: column; gap: 4px; line-height: 1.2; flex-grow: 1; min-width: 0">
-<span style="display: flex; align-items: center; gap: 10px; font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; opacity: 0.9">Hear the difference <span style=${read.chip}>${read.chipLabel}</span></span>
-<span style="font-family: ${fontD}; font-weight: 700; font-size: 18px">York Mosque & Islamic Centre</span>
+<span style="display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase">Hear the difference <span style=${read.chip}>${read.chipLabel}</span></span>
 </span>
 <button type="button" class="playbtn" onClick=${togglePlay} aria-label=${playLabel} style="flex-shrink: 0; width: 52px; height: 52px; border-radius: 999px; border: 0; background: #FFFFFF; color: #141B2D; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 10px 24px rgba(0,0,0,0.3)">
 ${playing ? html`<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"></rect><rect x="14" y="5" width="4" height="14" rx="1"></rect></svg>` : null}
