@@ -199,6 +199,9 @@ class Site extends DCLogic {
       logoHeader: 'height: 56px; width: auto; display: block' + (dark ? '; background: #FFFFFF; padding: 6px 12px; border-radius: 14px; box-sizing: content-box' : ''),
       logoFooter: 'height: 44px; width: auto; display: block' + (dark ? '; background: #FFFFFF; padding: 5px 10px; border-radius: 12px; box-sizing: content-box' : ''),
       logoSplash: dark ? 'background: #FFFFFF; padding: 14px 22px; border-radius: 20px' : '',
+      menuOpen: !!s.menu, menuClosed: !s.menu, navClass: s.menu ? 'open' : '',
+      toggleMenu: function () { self.setState({ menu: !self.state.menu }); },
+      closeMenu: function (e) { if (e && e.target && e.target.closest && e.target.closest('a')) self.setState({ menu: false }); },
       dark: dark, light: !dark, darkLabel: dark ? 'Switch to light mode' : 'Switch to dark mode',
       toggleDark: function () { var d = !self.state.dark; try { window.localStorage.setItem('ss-theme', d ? 'dark' : 'light'); } catch (e) {} self.setState({ dark: d }); },
       t: t, fontD: fontD, fontB: fontB, abBtns: abBtns, bars: bars, read: read, playing: playing, notPlaying: !playing, togglePlay: togglePlay, onEnded: onEnded, playLabel: playing ? 'Pause' : 'Play recording',
@@ -211,8 +214,8 @@ class Site extends DCLogic {
 
 
 function view(v) {
-  const { abBtns, bars, cap, dark, darkLabel, est, faqs, fontB, fontD, form, light, logoFooter, logoHeader, logoSplash, needOpts, notPlaying, onCap, onEnded, playLabel, playing, prefOpts, read, reviews, sendEnquiry, sendLabel, sizeLabel, spaceOpts, t, toggleDark, togglePlay, useForm, waQuote } = v;
-  return html`<div style="width: 100%; transition: background-color .4s, color .4s; background: ${t.bg}; color: ${t.ink}; font-family: ${fontB}; font-size: 17px; line-height: 1.6; overflow: hidden">
+  const { abBtns, bars, cap, closeMenu, dark, darkLabel, est, faqs, fontB, fontD, form, light, logoFooter, logoHeader, logoSplash, menuClosed, menuOpen, navClass, needOpts, notPlaying, onCap, onEnded, playLabel, playing, prefOpts, read, reviews, sendEnquiry, sendLabel, sizeLabel, spaceOpts, t, toggleDark, toggleMenu, togglePlay, useForm, waQuote } = v;
+  return html`<div style="--surf: ${t.surface}; --ln: ${t.line}; width: 100%; transition: background-color .4s, color .4s; background: ${t.bg}; color: ${t.ink}; font-family: ${fontB}; font-size: 17px; line-height: 1.6; overflow: hidden">
 
 
 <div class="splash" aria-hidden="true" style="background: ${t.bg}">
@@ -221,25 +224,30 @@ function view(v) {
 <div class="ld"><i></i></div>
 </div>
 
-<a href="#giveaway" style="display: block; text-decoration: none; background: ${t.accent}; color: ${t.accentInk}; text-align: center; padding: 10px 20px; font-size: 14px; font-weight: 600">The £10,000 Mosque Audio Giveaway is open. Nominate your masjid →</a>
+<a href="#giveaway" style="display: block; text-decoration: none; background: ${t.accent}; color: ${t.accentInk}; text-align: center; padding: 10px 20px; font-size: 14px; font-weight: 600"><span class="bar-long">The £10,000 Mosque Audio Giveaway is open. Nominate your masjid →</span><span class="bar-short">£10,000 Mosque Audio Giveaway: nominate your masjid →</span></a>
 
 
-<header style="max-width: 1320px; margin: 0 auto; padding: 22px 32px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px">
-<a href="#top" aria-label="Salah Sounds home" style="display: flex; align-items: center; text-decoration: none"><img src="img/salah-sounds-logo.png" alt="Salah Sounds Audio Visual" style=${logoHeader} /></a>
-<nav aria-label="Main" style="display: flex; flex-wrap: wrap; gap: 6px 30px; font-size: 15px; font-weight: 500; color: ${t.muted}">
+<header class="hdr" style="position: relative; max-width: 1320px; margin: 0 auto; padding: 22px 32px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px">
+<a href="#top" aria-label="Salah Sounds home" style="display: flex; align-items: center; text-decoration: none"><img class="hdr-logo" src="img/salah-sounds-logo.png" alt="Salah Sounds Audio Visual" style=${logoHeader} /></a>
+<nav aria-label="Main" id="main-nav" class=${navClass} onClick=${closeMenu} style="display: flex; flex-wrap: wrap; gap: 6px 30px; font-size: 15px; font-weight: 500; color: ${t.muted}">
 <a href="#services" style="text-decoration: none">Services</a>
 <a href="#estimate" style="text-decoration: none">Price my system</a>
 <a href="#packages" style="text-decoration: none">Packages</a>
 <a href="#reviews" style="text-decoration: none">Reviews</a>
 <a href="#academy" style="text-decoration: none">Academy</a>
 <a href="#faq" style="text-decoration: none">FAQ</a>
+<a href="#contact" class="nav-book" style="text-decoration: none; background: ${t.ink}; color: ${t.bg}; border-radius: 999px; text-align: center; font-weight: 600">Book a site visit</a>
 </nav>
 <div style="display: flex; align-items: center; gap: 10px">
 <button type="button" onClick=${toggleDark} aria-label=${darkLabel} title=${darkLabel} style="width: 46px; height: 46px; border-radius: 999px; border: 1px solid ${t.line}; background: ${t.surface}; color: ${t.ink}; display: flex; align-items: center; justify-content: center; cursor: pointer">
 ${dark ? html`<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2"></path><path d="M12 20v2"></path><path d="M4.9 4.9l1.4 1.4"></path><path d="M17.7 17.7l1.4 1.4"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="M4.9 19.1l1.4-1.4"></path><path d="M17.7 6.3l1.4-1.4"></path></svg>` : null}
 ${light ? html`<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path></svg>` : null}
 </button>
-<a href="#contact" style="min-height: 46px; display: inline-flex; align-items: center; padding: 0 22px; border-radius: 999px; background: ${t.ink}; color: ${t.bg}; text-decoration: none; font-size: 15px; font-weight: 600">Book a site visit</a>
+<a href="#contact" class="hdr-book" style="min-height: 46px; display: inline-flex; align-items: center; padding: 0 22px; border-radius: 999px; background: ${t.ink}; color: ${t.bg}; text-decoration: none; font-size: 15px; font-weight: 600">Book a site visit</a>
+<button type="button" class="hdr-burger" onClick=${toggleMenu} aria-expanded=${menuOpen} aria-controls="main-nav" aria-label="Menu" style="display: none; width: 46px; height: 46px; border-radius: 999px; border: 1px solid ${t.line}; background: ${t.surface}; color: ${t.ink}; align-items: center; justify-content: center; cursor: pointer">
+${menuOpen ? html`<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12"></path><path d="M18 6L6 18"></path></svg>` : null}
+${menuClosed ? html`<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h16"></path></svg>` : null}
+</button>
 </div>
 </header>
 
@@ -391,7 +399,7 @@ ${(bars||[]).map((bar, $index) => html`
 
 </div>
 <div style="display: flex; justify-content: center">
-<a href="#contact" style="min-height: 52px; display: inline-flex; align-items: center; gap: 10px; padding: 0 26px; border-radius: 999px; background: ${t.ink}; color: ${t.bg}; text-decoration: none; font-weight: 600">Sound familiar? Talk to an engineer →</a>
+<a href="#contact" class="cta-fam" style="min-height: 52px; display: inline-flex; align-items: center; gap: 10px; padding: 0 26px; border-radius: 999px; background: ${t.ink}; color: ${t.bg}; text-decoration: none; font-weight: 600">Sound familiar? Talk to an engineer →</a>
 </div>
 </div>
 </section>
@@ -446,7 +454,7 @@ ${(bars||[]).map((bar, $index) => html`
 </div>
 <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; background: ${t.bg2}; border-radius: 22px; padding: 20px 26px">
 <span style="display: flex; flex-wrap: wrap; gap: 8px 24px; font-size: 15px; font-weight: 600">
-<span>Also: video & editing</span><span style="color: ${t.muted}">·</span><span>Minaret speaker upgrades</span><span style="color: ${t.muted}">·</span><span>Portable PA hire</span><span style="color: ${t.muted}">·</span><span>Commercial & residential AV</span>
+<span>Also: video & editing</span><span class="sep" style="color: ${t.muted}">·</span><span>Minaret speaker upgrades</span><span class="sep" style="color: ${t.muted}">·</span><span>Portable PA hire</span><span class="sep" style="color: ${t.muted}">·</span><span>Commercial & residential AV</span>
 </span>
 <a href="#contact" style="font-weight: 600; color: ${t.accentText}; text-decoration: none; min-height: 44px; display: inline-flex; align-items: center">Ask about something else →</a>
 </div>

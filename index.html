@@ -53,12 +53,28 @@ a[style*="border-radius: 999px"]:hover,button:hover{transform:translateY(-2px);f
 .stripe{background-size:200% 100%!important;animation:slide 6s linear infinite}
 #work a img{transition:transform .5s}
 #work a:hover img{transform:scale(1.06) rotate(-2deg)}
+
+.bar-short{display:none}.nav-book{display:none}
+@media (max-width: 760px){
+.bar-long{display:none}.bar-short{display:inline}
+.hdr{padding:12px 18px!important;flex-wrap:nowrap!important;gap:10px!important}
+.hdr-logo{height:40px!important}
+.hdr-book{display:none!important}
+.hdr-burger{display:flex!important}
+#main-nav{display:none!important}
+#main-nav.open{display:flex!important;position:absolute;left:12px;right:12px;top:calc(100% - 4px);flex-direction:column;gap:2px!important;background:var(--surf);border:1px solid var(--ln);border-radius:22px;padding:10px;z-index:50;box-shadow:0 24px 48px rgba(10,15,40,.18);font-size:17px!important;animation:fadeUp .25s ease both}
+#main-nav.open a{padding:13px 14px;border-radius:14px}
+#main-nav.open .nav-book{display:block;margin-top:6px;padding:15px 14px}
+#top{padding-top:8px!important}
+.sep{display:none}
+.cta-fam{padding:14px 22px!important;text-align:center;justify-content:center;line-height:1.3}
+}
 @media (prefers-reduced-motion: reduce){.splash{display:none!important}.bar,.marq,.pulse,.playbtn,.stripe,.in1,.in2,.in3,.in4,.in5,section h2,article,figure,ol>li,#work a,.rv{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
 <div id="app"></div>
 <noscript>Please enable JavaScript to view this site, or call us on 020 3817 7858.</noscript>
-<script type="module" src="js/app.js?v=1794506577"></script>
+<script type="module" src="js/app.js?v=1794506815"></script>
 </body>
 </html>

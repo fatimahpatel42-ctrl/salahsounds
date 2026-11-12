@@ -2,6 +2,10 @@
 (function(){
   var mb=document.querySelector('[data-mode]');
   if(mb)mb.addEventListener('click',function(){var d=document.documentElement.getAttribute('data-theme')!=='dark';if(d)document.documentElement.setAttribute('data-theme','dark');else document.documentElement.removeAttribute('data-theme');try{localStorage.setItem('ss-theme',d?'dark':'light')}catch(e){}});
+  var bg=document.querySelector('[data-burger]'),nv=document.getElementById('main-nav');
+  if(bg&&nv){var X='<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12"/><path d="M18 6L6 18"/></svg>',B=bg.innerHTML;
+    var set=function(o){nv.classList.toggle('open',o);bg.setAttribute('aria-expanded',o?'true':'false');bg.innerHTML=o?X:B};
+    bg.addEventListener('click',function(){set(!nv.classList.contains('open'))});nv.addEventListener('click',function(e){if(e.target.closest('a'))set(false)});}
   var WA='https://wa.me/442038177858?text=';
   // chip groups
   document.querySelectorAll('.pick').forEach(function(g){

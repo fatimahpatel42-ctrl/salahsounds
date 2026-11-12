@@ -12,8 +12,9 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font);font
 a{color:inherit}
 img{max-width:100%;display:block}
 .wrap{max-width:1240px;margin:0 auto;padding:0 32px}
+.bar .s{display:none}.nav-book{display:none}.burger{display:none}
 .bar{display:block;text-align:center;background:var(--accent);color:#fff;text-decoration:none;font-size:14px;font-weight:600;padding:10px 20px}
-header.site{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;padding:20px 0}
+header.site{position:relative;display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px;padding:20px 0}
 header.site img{height:52px;width:auto}
 nav.main{display:flex;flex-wrap:wrap;gap:6px 26px;font-size:15px;font-weight:500;color:var(--muted)}
 nav.main a{text-decoration:none}nav.main a[aria-current]{color:var(--accentText);font-weight:700}
@@ -101,6 +102,20 @@ fieldset{border:0;margin:0;padding:0}legend{font-size:14px;font-weight:600;margi
 footer.site{padding:36px 0;font-size:14px;color:var(--muted);display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:20px}
 footer.site img{height:42px}
 .wa-float{position:fixed;right:24px;bottom:24px;width:60px;height:60px;border-radius:999px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 12px 30px rgba(30,35,80,.25);z-index:10}
+@media (max-width:760px){
+.bar .l{display:none}.bar .s{display:inline}
+.wrap{padding:0 18px}
+header.site{flex-wrap:nowrap;padding:12px 0;gap:10px}
+header.site img{height:40px}
+header.site .btn-dark{display:none}
+.burger{display:flex;width:46px;height:46px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--ink);align-items:center;justify-content:center;cursor:pointer}
+nav.main{display:none}
+nav.main.open{display:flex;position:absolute;left:0;right:0;top:calc(100% - 4px);flex-direction:column;gap:2px;background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:10px;z-index:50;box-shadow:0 24px 48px rgba(10,15,40,.18);font-size:17px}
+nav.main.open a{padding:13px 14px;border-radius:14px}
+nav.main.open .nav-book{display:block;margin-top:6px;background:var(--btnDark);color:var(--btnDarkInk);text-align:center;font-weight:600;padding:15px}
+.hero{padding-top:8px}
+.contact{border-radius:28px}
+}
 /* motion */
 .in{animation:fadeUp .9s cubic-bezier(.2,.7,.2,1) both}.d1{animation-delay:.1s}.d2{animation-delay:.2s}.d3{animation-delay:.32s}
 @keyframes fadeUp{from{opacity:0;translate:0 24px}to{opacity:1;translate:0 0}}
