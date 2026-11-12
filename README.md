@@ -4,7 +4,8 @@ Redesigned homepage for [Salah Sounds](https://salahsounds.co.uk), mosque sound 
 
 ## What's here
 
-- `index.html` — the page shell (fonts, meta tags)
+- `index.html` — the homepage shell (fonts, meta tags)
+- `services/` — service pages: mosque sound systems, event AV & live streaming, training & support (plain HTML, styled by `css/site.css`, behaviour in `js/page.js`)
 - `js/app.js` — the page and its interactive parts (before/after player, price tool, FAQ, reviews, contact form chips)
 - `js/vendor/` — Preact and htm, bundled locally (no build step, no CDN)
 - `img/` — logo, client logos and masjid photos
@@ -24,7 +25,10 @@ then open http://localhost:8000.
 
 Settings → Pages → Source: **Deploy from a branch** → Branch: `main` / root.
 
+## How enquiries work
+
+The price tool and every enquiry form open WhatsApp (or email, if the visitor picks it) with their answers already written into the message, so nothing has to be retyped.
+
 ## Still to do before launch
 
-- Connect the contact form to email or WhatsApp (the "Send my enquiry" button doesn't submit yet)
 - Link the "Read all on Google" and "Leave a review" buttons to the Google Business profile

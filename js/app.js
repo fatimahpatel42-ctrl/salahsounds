@@ -129,12 +129,51 @@ class Site extends DCLogic {
       };
     });
 
+    // Quote & enquiry: carry answers through, nothing to retype
+    var WA = 'https://wa.me/442038177858?text=';
+    var quoteLines = [
+      'Assalamu alaikum, I’d like a quote.',
+      'For: ' + (spaceOpts.filter(function (o) { return o.on; })[0] || {}).label,
+      'Number of people: ' + cap + ' (' + sizeLabel + ')',
+      'Recommended: ' + est.name + ' (from ' + est.from + ')',
+      'Interested in: ' + add.join(', ')
+    ];
+    var waQuote = WA + encodeURIComponent(quoteLines.join('\n'));
+    var spaceToNeed = { masjid: 'Mosque sound system', event: 'Event AV / live stream', video: 'Video production' };
+    var f = s.form || { name: '', phone: '', org: '', msg: '' };
+    var setF = function (k) { return function (e) { var n = Object.assign({}, self.state.form || { name: '', phone: '', org: '', msg: '' }); n[k] = e.target.value; self.setState({ form: n }); }; };
+    var form = { name: f.name, phone: f.phone, org: f.org, msg: f.msg, setName: setF('name'), setPhone: setF('phone'), setOrg: setF('org'), setMsg: setF('msg') };
+    var useForm = function () {
+      var n = Object.assign({}, self.state.form || { name: '', phone: '', org: '', msg: '' });
+      n.msg = quoteLines.slice(1).join('\n') + (n.msg ? '\n\n' + n.msg : '');
+      self.setState({ form: n, need: spaceToNeed[self.state.space] || 'Mosque sound system' });
+      var el = document.getElementById('enquiry'); if (el && el.scrollIntoView) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
     // Contact form chips
     var chip = function (on) { return 'min-height: 44px; padding: 0 16px; border-radius: 999px; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer; border: 1px solid ' + (on ? '#5A55D6' : '#D5DAE8') + '; background: ' + (on ? '#5A55D6' : '#FFFFFF') + '; color: ' + (on ? '#FFFFFF' : '#141B2D'); };
     var need = s.need || 'Mosque sound system';
     var needOpts = ['Mosque sound system', 'Event AV / live stream', 'Video production', 'Support / tuning'].map(function (x) { return { label: x, on: need === x, style: chip(need === x), pick: function () { self.setState({ need: x }); } }; });
     var pref = s.pref || 'WhatsApp';
     var prefOpts = ['WhatsApp', 'Phone call', 'Email'].map(function (x) { return { label: x, on: pref === x, style: chip(pref === x), pick: function () { self.setState({ pref: x }); } }; });
+
+    var enquiryLines = function () {
+      var st = self.state, ff = st.form || {};
+      return ['Assalamu alaikum, new enquiry from the website.',
+        'Need: ' + (st.need || 'Mosque sound system'),
+        ff.name ? 'Name: ' + ff.name : null,
+        ff.phone ? 'Phone / WhatsApp: ' + ff.phone : null,
+        ff.org ? 'Masjid / organisation: ' + ff.org : null,
+        'Best way to reach me: ' + (st.pref || 'WhatsApp'),
+        ff.msg ? '\n' + ff.msg : null].filter(Boolean).join('\n');
+    };
+    var sendLabel = pref === 'Email' ? 'Send by email' : pref === 'Phone call' ? 'Request a call back' : 'Send on WhatsApp';
+    var sendEnquiry = function () {
+      var body = enquiryLines();
+      var url = (self.state.pref === 'Email')
+        ? 'mailto:sales@salahsounds.co.uk?subject=' + encodeURIComponent('Website enquiry: ' + (self.state.need || 'Mosque sound system')) + '&body=' + encodeURIComponent(body)
+        : WA + encodeURIComponent(body);
+      window.open(url, '_blank', 'noopener');
+    };
 
     // FAQ
     var qa = [
@@ -153,14 +192,14 @@ class Site extends DCLogic {
       t: t, fontD: fontD, fontB: fontB, abBtns: abBtns, bars: bars, read: read, playing: playing, notPlaying: !playing, togglePlay: togglePlay, onEnded: onEnded, playLabel: playing ? 'Pause' : 'Play recording',
       spaceOpts: spaceOpts, cap: cap, sizeLabel: sizeLabel, est: est,
       onCap: function (e) { self.setState({ cap: parseInt(e.target.value, 10) }); },
-      faqs: faqs, reviews: reviews, needOpts: needOpts, prefOpts: prefOpts
+      faqs: faqs, reviews: reviews, needOpts: needOpts, prefOpts: prefOpts, waQuote: waQuote, useForm: useForm, form: form, sendEnquiry: sendEnquiry, sendLabel: sendLabel
     };
   }
 }
 
 
 function view(v) {
-  const { abBtns, bars, cap, est, faqs, fontB, fontD, needOpts, notPlaying, onCap, onEnded, playLabel, playing, prefOpts, read, reviews, sizeLabel, spaceOpts, t, togglePlay } = v;
+  const { abBtns, bars, cap, est, faqs, fontB, fontD, form, needOpts, notPlaying, onCap, onEnded, playLabel, playing, prefOpts, read, reviews, sendEnquiry, sendLabel, sizeLabel, spaceOpts, t, togglePlay, useForm, waQuote } = v;
   return html`<div style="width: 100%; background: ${t.bg}; color: ${t.ink}; font-family: ${fontB}; font-size: 17px; line-height: 1.6; overflow: hidden">
 
 
@@ -360,7 +399,7 @@ ${(bars||[]).map((bar, $index) => html`
 <p style="margin: 0; color: #B8C0D4; font-size: 16px">Designed around your hall — from a small musalla to a large jāmiʿ masjid.</p>
 </div>
 <ul style="margin: 0; padding: 18px 0 0; border-top: 1px solid #2E3A5C; list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 15px"><li style="display: flex; gap: 10px; align-items: flex-start"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A9B4FF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0; margin-top: 3px"><path d="M20 6L9 17l-5-5"></path></svg>Acoustic assessment & system design</li><li style="display: flex; gap: 10px; align-items: flex-start"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A9B4FF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0; margin-top: 3px"><path d="M20 6L9 17l-5-5"></path></svg>Digital mixer & 3-tier mic system</li><li style="display: flex; gap: 10px; align-items: flex-start"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A9B4FF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0; margin-top: 3px"><path d="M20 6L9 17l-5-5"></path></svg>Column speakers, sisters’ & overflow zones</li><li style="display: flex; gap: 10px; align-items: flex-start"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#A9B4FF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0; margin-top: 3px"><path d="M20 6L9 17l-5-5"></path></svg>Haramain EQ tuning</li></ul>
-<a href="#estimate" style="margin-top: auto; min-height: 48px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border-radius: 999px; text-decoration: none; font-weight: 600; font-size: 15px; background: #A9B4FF; color: #141B2D">Price my mosque system →</a>
+<a href="services/mosque-sound-systems.html" style="margin-top: auto; min-height: 48px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border-radius: 999px; text-decoration: none; font-weight: 600; font-size: 15px; background: #A9B4FF; color: #141B2D">Explore mosque systems →</a>
 </article>
 <article style="background: ${t.surface}; color: ${t.ink}; border: 1px solid ${t.line}; border-radius: 28px; padding: 32px; display: flex; flex-direction: column; gap: 20px; box-shadow: 0 20px 40px rgba(30,35,80,0.06)">
 <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px">
@@ -372,7 +411,7 @@ ${(bars||[]).map((bar, $index) => html`
 <p style="margin: 0; color: ${t.muted}; font-size: 16px">Conferences, charity dinners, launches, talks and seminars, handled end to end.</p>
 </div>
 <ul style="margin: 0; padding: 18px 0 0; border-top: 1px solid ${t.line}; list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 15px"><li style="display: flex; gap: 10px; align-items: flex-start"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke=${t.accentText} stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0; margin-top: 3px"><path d="M20 6L9 17l-5-5"></path></svg>PA, microphones & stage monitoring</li><li style="display: flex; gap: 10px; align-items: flex-start"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke=${t.accentText} stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0; margin-top: 3px"><path d="M20 6L9 17l-5-5"></path></svg>Cameras, screens & lighting</li><li style="display: flex; gap: 10px; align-items: flex-start"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke=${t.accentText} stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0; margin-top: 3px"><path d="M20 6L9 17l-5-5"></path></svg>Live stream to YouTube & Facebook</li><li style="display: flex; gap: 10px; align-items: flex-start"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke=${t.accentText} stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0; margin-top: 3px"><path d="M20 6L9 17l-5-5"></path></svg>On-the-day production crew</li></ul>
-<a href="#contact" style="margin-top: auto; min-height: 48px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border-radius: 999px; text-decoration: none; font-weight: 600; font-size: 15px; border: 1px solid ${t.line}; color: ${t.ink}">Check my event date →</a>
+<a href="services/event-av-live-streaming.html" style="margin-top: auto; min-height: 48px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border-radius: 999px; text-decoration: none; font-weight: 600; font-size: 15px; border: 1px solid ${t.line}; color: ${t.ink}">Explore event AV →</a>
 </article>
 <article style="background: ${t.surface}; color: ${t.ink}; border: 1px solid ${t.line}; border-radius: 28px; padding: 32px; display: flex; flex-direction: column; gap: 20px; box-shadow: 0 20px 40px rgba(30,35,80,0.06)">
 <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px">
@@ -384,7 +423,7 @@ ${(bars||[]).map((bar, $index) => html`
 <p style="margin: 0; color: ${t.muted}; font-size: 16px">We train your team, then stay on hand — in person or remotely, wherever you are.</p>
 </div>
 <ul style="margin: 0; padding: 18px 0 0; border-top: 1px solid ${t.line}; list-style: none; display: flex; flex-direction: column; gap: 10px; font-size: 15px"><li style="display: flex; gap: 10px; align-items: flex-start"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke=${t.accentText} stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0; margin-top: 3px"><path d="M20 6L9 17l-5-5"></path></svg>Volunteer & imam training</li><li style="display: flex; gap: 10px; align-items: flex-start"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke=${t.accentText} stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0; margin-top: 3px"><path d="M20 6L9 17l-5-5"></path></svg>Remote tuning, UK & worldwide</li><li style="display: flex; gap: 10px; align-items: flex-start"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke=${t.accentText} stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0; margin-top: 3px"><path d="M20 6L9 17l-5-5"></path></svg>Maintenance & upgrades</li><li style="display: flex; gap: 10px; align-items: flex-start"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke=${t.accentText} stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0; margin-top: 3px"><path d="M20 6L9 17l-5-5"></path></svg>Portable systems for Eid & Ramadan</li></ul>
-<a href="#contact" style="margin-top: auto; min-height: 48px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border-radius: 999px; text-decoration: none; font-weight: 600; font-size: 15px; border: 1px solid ${t.line}; color: ${t.ink}">Get support →</a>
+<a href="services/training-tuning-support.html" style="margin-top: auto; min-height: 48px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; border-radius: 999px; text-decoration: none; font-weight: 600; font-size: 15px; border: 1px solid ${t.line}; color: ${t.ink}">Explore training & support →</a>
 </article>
 </div>
 <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; background: ${t.bg2}; border-radius: 22px; padding: 20px 26px">
@@ -441,7 +480,11 @@ ${(est.addons||[]).map((x, $index) => html`<li>+ ${x.label}</li>`)}
 </div>
 </div>
 <p style="margin: 0; font-size: 14px; color: ${t.muted}; border-top: 1px solid ${t.line}; padding-top: 18px">Starting price only. Your final quote depends on the building, and we'll price-match any like-for-like quote.</p>
-<a href="#contact" style="min-height: 56px; display: flex; align-items: center; justify-content: center; border-radius: 999px; background: ${t.accent}; color: ${t.accentInk}; text-decoration: none; font-weight: 600; font-size: 16px">Get my exact quote</a>
+<div style="display: flex; flex-direction: column; gap: 10px">
+<a href=${waQuote} target="_blank" rel="noopener" style="min-height: 56px; display: flex; align-items: center; justify-content: center; gap: 10px; border-radius: 999px; background: ${t.accent}; color: ${t.accentInk}; text-decoration: none; font-weight: 600; font-size: 16px"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5z"></path></svg>Send this to us on WhatsApp</a>
+<button type="button" onClick=${useForm} style="min-height: 48px; border-radius: 999px; border: 1px solid ${t.line}; background: transparent; color: ${t.ink}; font: inherit; font-weight: 600; font-size: 15px; cursor: pointer">Or add it to the enquiry form</button>
+<p style="margin: 0; text-align: center; font-size: 13px; color: ${t.muted}">Your answers are filled in for you, so there's nothing to retype.</p>
+</div>
 </div>
 </div>
 </section>
@@ -651,7 +694,7 @@ ${f.open ? html`<p style="margin: 0 0 24px; color: ${t.muted}; max-width: 620px"
 </div>
 </div>
 
-<form style="background: #FFFFFF; color: #141B2D; border-radius: 28px; padding: clamp(24px, 3.5vw, 40px); display: flex; flex-direction: column; gap: 20px; align-self: start">
+<form id="enquiry" style="background: #FFFFFF; color: #141B2D; border-radius: 28px; padding: clamp(24px, 3.5vw, 40px); display: flex; flex-direction: column; gap: 20px; align-self: start">
 <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap">
 <h3 style="margin: 0; font-family: ${fontD}; font-weight: 800; font-size: 28px; letter-spacing: -0.02em">Get a free quote</h3>
 <span style="font-size: 13px; font-weight: 600; color: #4A45C4; background: #ECEEF7; padding: 6px 12px; border-radius: 999px">No obligation</span>
@@ -665,11 +708,11 @@ ${(needOpts||[]).map((o, $index) => html`
 </div>
 </fieldset>
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px">
-<label style="display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 600">Your name<input type="text" autocomplete="name" placeholder="Yusuf Ahmed" style="min-height: 52px; border-radius: 14px; border: 1px solid #D5DAE8; background: #F6F7FB; color: #141B2D; padding: 0 16px; font: inherit; font-weight: 400" /></label>
-<label style="display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 600">Phone / WhatsApp<input type="tel" autocomplete="tel" placeholder="07…" style="min-height: 52px; border-radius: 14px; border: 1px solid #D5DAE8; background: #F6F7FB; color: #141B2D; padding: 0 16px; font: inherit; font-weight: 400" /></label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 600">Your name<input type="text" autocomplete="name" value=${form.name} onInput=${form.setName} placeholder="Yusuf Ahmed" style="min-height: 52px; border-radius: 14px; border: 1px solid #D5DAE8; background: #F6F7FB; color: #141B2D; padding: 0 16px; font: inherit; font-weight: 400" /></label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 600">Phone / WhatsApp<input type="tel" autocomplete="tel" value=${form.phone} onInput=${form.setPhone} placeholder="07…" style="min-height: 52px; border-radius: 14px; border: 1px solid #D5DAE8; background: #F6F7FB; color: #141B2D; padding: 0 16px; font: inherit; font-weight: 400" /></label>
 </div>
-<label style="display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 600">Masjid / organisation & town<input type="text" placeholder="e.g. Baitul Aman, Leicester" style="min-height: 52px; border-radius: 14px; border: 1px solid #D5DAE8; background: #F6F7FB; color: #141B2D; padding: 0 16px; font: inherit; font-weight: 400" /></label>
-<label style="display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 600">What's going on with your sound?<textarea rows="4" placeholder="Hall size, capacity, current problems, event date…" style="border-radius: 14px; border: 1px solid #D5DAE8; background: #F6F7FB; color: #141B2D; padding: 14px 16px; font: inherit; font-weight: 400; resize: vertical"></textarea></label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 600">Masjid / organisation & town<input type="text" value=${form.org} onInput=${form.setOrg} placeholder="e.g. Baitul Aman, Leicester" style="min-height: 52px; border-radius: 14px; border: 1px solid #D5DAE8; background: #F6F7FB; color: #141B2D; padding: 0 16px; font: inherit; font-weight: 400" /></label>
+<label style="display: flex; flex-direction: column; gap: 6px; font-size: 14px; font-weight: 600">What's going on with your sound?<textarea rows="5" value=${form.msg} onInput=${form.setMsg} placeholder="Hall size, capacity, current problems, event date…" style="border-radius: 14px; border: 1px solid #D5DAE8; background: #F6F7FB; color: #141B2D; padding: 14px 16px; font: inherit; font-weight: 400; resize: vertical"></textarea></label>
 <fieldset style="border: 0; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px">
 <legend style="font-size: 14px; font-weight: 600; margin-bottom: 10px">Best way to reach you</legend>
 <div style="display: flex; flex-wrap: wrap; gap: 8px">
@@ -678,7 +721,7 @@ ${(prefOpts||[]).map((o, $index) => html`
 `)}
 </div>
 </fieldset>
-<button type="button" style="min-height: 58px; border-radius: 999px; border: 0; background: #5A55D6; color: #FFFFFF; font: inherit; font-weight: 700; font-size: 17px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px">Send my enquiry<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="M13 6l6 6-6 6"></path></svg></button>
+<button type="button" onClick=${sendEnquiry} style="min-height: 58px; border-radius: 999px; border: 0; background: #5A55D6; color: #FFFFFF; font: inherit; font-weight: 700; font-size: 17px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px">${sendLabel}<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"></path><path d="M13 6l6 6-6 6"></path></svg></button>
 <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 18px; font-size: 13px; color: #525C72">
 <span>✓ Price-match guarantee</span><span>✓ Rated Excellent on Google</span><span>✓ UK-wide & remote support</span>
 </div>
