@@ -259,10 +259,10 @@ ${light ? html`<svg width="20" height="20" viewBox="0 0 24 24" fill="none" strok
 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-12.4 7.4L3 21l2.1-5.5A8.4 8.4 0 1 1 21 11.5z"></path></svg>WhatsApp an engineer</a>
 </div>
 <div class="in4" style="display: flex; flex-wrap: wrap; align-items: center; gap: 14px 32px; padding-top: 8px; border-top: 1px solid ${t.line}">
-<div style="display: flex; align-items: center; gap: 10px; padding-top: 18px">
+<a href="https://www.google.com/search?q=Salah+Sounds+East+Ham+reviews" target="_blank" rel="noopener" style="text-decoration: none; display: flex; align-items: center; gap: 10px; padding-top: 18px">
 <span style="font-family: ${fontD}; font-weight: 800; font-size: 34px; line-height: 1">5★</span>
 <span style="font-size: 14px; line-height: 1.35; color: ${t.muted}">Rated Excellent<br />67 Google reviews</span>
-</div>
+</a>
 <div style="display: flex; align-items: center; gap: 10px; padding-top: 18px">
 <span style="font-family: ${fontD}; font-weight: 800; font-size: 34px; line-height: 1">£</span>
 <span style="font-size: 14px; line-height: 1.35; color: ${t.muted}">Price-match<br />guarantee</span>
@@ -312,8 +312,8 @@ ${(bars||[]).map((bar, $index) => html`
 <section aria-label="Trusted by" style="padding: 56px 0 64px; background: ${t.bg2}; border-top: 1px solid ${t.line}; border-bottom: 1px solid ${t.line}">
 <div style="max-width: 1320px; margin: 0 auto 32px; padding: 0 32px; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px">
 <p style="margin: 0; font-family: ${fontD}; font-weight: 700; font-size: 22px; letter-spacing: -0.01em">Trusted by masjids, charities and event organisers</p>
-<span style="display: inline-flex; align-items: center; gap: 10px; background: ${t.surface}; border: 1px solid ${t.line}; border-radius: 999px; padding: 8px 16px; font-size: 14px; font-weight: 600">
-<span style="color: #F2B01E; letter-spacing: 2px" aria-hidden="true">★★★★★</span>Excellent · 67 Google reviews</span>
+<a href="https://www.google.com/search?q=Salah+Sounds+East+Ham+reviews" target="_blank" rel="noopener" style="text-decoration: none; display: inline-flex; align-items: center; gap: 10px; background: ${t.surface}; border: 1px solid ${t.line}; border-radius: 999px; padding: 8px 16px; min-height: 44px; font-size: 14px; font-weight: 600">
+<span style="color: #F2B01E; letter-spacing: 2px" aria-hidden="true">★★★★★</span>Excellent · 67 Google reviews<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17L17 7"></path><path d="M8 7h9v9"></path></svg></a>
 </div>
 <div style="overflow: hidden; -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent)">
 <div class="marq" style="gap: 20px; padding: 4px 0">
@@ -564,8 +564,8 @@ ${(est.addons||[]).map((x, $index) => html`<li>+ ${x.label}</li>`)}
 </div>
 </div>
 <div style="display: flex; flex-direction: column; gap: 10px">
-<a href="#reviews" style="min-height: 46px; display: inline-flex; align-items: center; justify-content: center; padding: 0 22px; border-radius: 999px; background: ${t.accent}; color: ${t.accentInk}; text-decoration: none; font-weight: 600; font-size: 15px">Read all on Google</a>
-<a href="#reviews" style="min-height: 44px; display: inline-flex; align-items: center; justify-content: center; padding: 0 22px; border-radius: 999px; border: 1px solid ${t.line}; text-decoration: none; font-weight: 600; font-size: 15px">Leave a review</a>
+<a href="https://www.google.com/search?q=Salah+Sounds+East+Ham+reviews" target="_blank" rel="noopener" style="min-height: 46px; display: inline-flex; align-items: center; justify-content: center; padding: 0 22px; border-radius: 999px; background: ${t.accent}; color: ${t.accentInk}; text-decoration: none; font-weight: 600; font-size: 15px">Read all on Google</a>
+<a href="https://www.google.com/search?q=Salah+Sounds+East+Ham+reviews" target="_blank" rel="noopener" style="min-height: 44px; display: inline-flex; align-items: center; justify-content: center; padding: 0 22px; border-radius: 999px; border: 1px solid ${t.line}; text-decoration: none; font-weight: 600; font-size: 15px">Leave a review</a>
 </div>
 </div>
 </div>

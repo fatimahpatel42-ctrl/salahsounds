@@ -31,4 +31,4 @@ The price tool and every enquiry form open WhatsApp (or email, if the visitor pi
 
 ## Still to do before launch
 
-- Link the "Read all on Google" and "Leave a review" buttons to the Google Business profile
+- Swap the Google review links (currently a Google search for "Salah Sounds East Ham reviews") for the exact Google Business profile link
