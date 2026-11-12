@@ -346,6 +346,29 @@ ${(bars||[]).map((bar, $index) => html`
 </section>
 
 
+<section aria-label="Salah Sounds in numbers" style="padding: 56px 32px 8px">
+<div style="max-width: 1320px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 16px">
+<div class="rv" style="background: ${t.surface}; border: 1px solid ${t.line}; border-radius: 24px; padding: 26px 26px 24px; display: flex; flex-direction: column; gap: 14px">
+<span style="width: 52px; height: 52px; border-radius: 16px; background: linear-gradient(135deg, #4F7FE0, #7A4FC0); display: flex; align-items: center; justify-content: center"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10v4"></path><path d="M8 6v12"></path><path d="M12 3v18"></path><path d="M16 7v10"></path><path d="M20 10v4"></path></svg></span>
+<span style="font-family: ${fontD}; font-weight: 800; font-size: clamp(44px, 5vw, 64px); line-height: 1; letter-spacing: -0.04em">5+</span>
+<span style="font-size: 14px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: ${t.muted}">Years of experience</span>
+</div><div class="rv" style="background: ${t.surface}; border: 1px solid ${t.line}; border-radius: 24px; padding: 26px 26px 24px; display: flex; flex-direction: column; gap: 14px">
+<span style="width: 52px; height: 52px; border-radius: 16px; background: linear-gradient(135deg, #4F7FE0, #7A4FC0); display: flex; align-items: center; justify-content: center"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 21h18"></path><path d="M5 21V11a7 7 0 0 1 14 0v10"></path><path d="M12 4V2"></path><path d="M10 21v-4a2 2 0 0 1 4 0v4"></path></svg></span>
+<span style="font-family: ${fontD}; font-weight: 800; font-size: clamp(44px, 5vw, 64px); line-height: 1; letter-spacing: -0.04em">60+</span>
+<span style="font-size: 14px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: ${t.muted}">Systems installed</span>
+</div><div class="rv" style="background: ${t.surface}; border: 1px solid ${t.line}; border-radius: 24px; padding: 26px 26px 24px; display: flex; flex-direction: column; gap: 14px">
+<span style="width: 52px; height: 52px; border-radius: 16px; background: linear-gradient(135deg, #4F7FE0, #7A4FC0); display: flex; align-items: center; justify-content: center"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="2" width="6" height="12" rx="3"></rect><path d="M5 10a7 7 0 0 0 14 0"></path><path d="M12 17v4"></path></svg></span>
+<span style="font-family: ${fontD}; font-weight: 800; font-size: clamp(44px, 5vw, 64px); line-height: 1; letter-spacing: -0.04em">50+</span>
+<span style="font-size: 14px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: ${t.muted}">Events managed</span>
+</div><div class="rv" style="background: ${t.surface}; border: 1px solid ${t.line}; border-radius: 24px; padding: 26px 26px 24px; display: flex; flex-direction: column; gap: 14px">
+<span style="width: 52px; height: 52px; border-radius: 16px; background: linear-gradient(135deg, #4F7FE0, #7A4FC0); display: flex; align-items: center; justify-content: center"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5L6 9H2v6h4l5 4z"></path><path d="M15.5 8.5a5 5 0 0 1 0 7"></path><path d="M18.5 5.5a9 9 0 0 1 0 13"></path></svg></span>
+<span style="font-family: ${fontD}; font-weight: 800; font-size: clamp(44px, 5vw, 64px); line-height: 1; letter-spacing: -0.04em">30</span>
+<span style="font-size: 14px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: ${t.muted}">Systems maintained</span>
+</div>
+</div>
+</section>
+
+
 <section style="padding: 72px 32px">
 <div style="max-width: 1320px; margin: 0 auto; display: flex; flex-direction: column; gap: 40px">
 <div style="display: flex; flex-direction: column; align-items: center; text-align: center; gap: 16px">
